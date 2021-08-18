@@ -49,17 +49,17 @@ In the **ios/Runner/Info.plist** let’s add a number of permissions to enable b
 
 ```dart 
 	<dict>  
-	    <key>NSBluetoothAlwaysUsageDescription</key>  
-	    <string>Need BLE permission</string>  
-	    <key>NSBluetoothPeripheralUsageDescription</key>  
-	    <string>Need BLE permission</string>  
-	    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>  
-	    <string>Need Location permission</string>  
-	    <key>NSLocationAlwaysUsageDescription</key>  
-	    <string>Need Location permission</string>  
-	    <key>NSLocationWhenInUseUsageDescription</key>  
-	    <string>Need Location permission</string>
-	    <key>UIBackgroundModes</key>
+        <key>NSBluetoothAlwaysUsageDescription</key>  
+        <string>Need BLE permission</string>  
+        <key>NSBluetoothPeripheralUsageDescription</key>  
+        <string>Need BLE permission</string>  
+        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>  
+        <string>Need Location permission</string>  
+        <key>NSLocationAlwaysUsageDescription</key>  
+        <string>Need Location permission</string>  
+        <key>NSLocationWhenInUseUsageDescription</key>  
+        <string>Need Location permission</string>
+        <key>UIBackgroundModes</key>
         <array>
             <string>bluetooth-central</string>
         </array>
@@ -88,6 +88,9 @@ void main() {
   final plugin = FlicButtonPlugin(flic2listener: ButtonListener());
   _flicPlugin = FlicButtonPlugin(flic2listener: this);
   _flicPlugin.invokation.then((value) {
+    // NOTE: value will be true that it initialised unless you already did (iOS can't stop so will be false a lot)
+    // which is why I am choosing to ignore the 'value here'
+    
     // have invoked the plugin here, get all the buttons to connect them up
     return _flicPlugin.getFlic2Buttons();
   }).then((value) {

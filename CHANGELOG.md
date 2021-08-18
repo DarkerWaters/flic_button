@@ -1,3 +1,7 @@
+## [0.1.3] 2021-08-18
+
+* iOS disposing the plugin doesn't error - returns 'no' or false that it can't. Can start again and it's cool.
+
 ## [0.1.2] 2021-08-18
 
 * Changed the Flic2ButtonListener to a mixin so you don't have to overload everything

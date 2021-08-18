@@ -93,8 +93,10 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
     if ([MethodNameInitialise isEqualToString:call.method]) {
         // initialize the Flic2 manager here then please
         if (nil != self->flic2Controller) {
-            // already running, this isn't great
-            result([FlutterError errorWithCode:ERROR_ALREADY_STARTED message: @"Flic 2 has been initialized already" details: @"Flic 2 started already, okay to call twice but won't do anything..."]);
+            // already running, this isn't great but let's not worry as stopping things can be an issue (especially in iOS)
+            //result([FlutterError errorWithCode:ERROR_ALREADY_STARTED message: @"Flic 2 has been initialized already" details: @"Flic 2 started already, okay to call twice but won't do anything..."]);
+            // instead, let's return that we didn't start because it's started
+            result(@(NO));
         } else {
             // create the controller that does all the actual work then
             self->flic2Controller = [[Flic2Controller alloc] initWithListener:self];
@@ -109,7 +111,8 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
             result([FlutterError errorWithCode:ERROR_NOT_STARTED message: @"Flic 2 hasn't been initialized" details: @"Flic 2 isn't running so we can't stop it..."]);
         } else {
             //!!! THIS ISN'T GREAT BUT THE SHUTTING DOWN DOESN'T WORK IN iOS - SO DON'T LET THEM
-            result([FlutterError errorWithCode:ERROR_ALREADY_STARTED message: @"Flic2 cannot be stopped in iOS" details: @"Sorry, but as it stands if I shutdown Flic2 in iOS it can't start up again properly, so i'm not going to!"]);
+            //result([FlutterError errorWithCode:ERROR_ALREADY_STARTED message: @"Flic2 cannot be stopped in iOS" details: @"Sorry, but as it stands if I shutdown Flic2 in iOS it can't start up again properly, so i'm not going to!"]);
+            // instead just return that we aren't going to do this.
             result(@(NO));
             /*
             // inform the controller that we are disposing it here
