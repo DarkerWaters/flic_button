@@ -1,8 +1,7 @@
 name: flic_button
 description: An interface to the flic2 button.
-version: 0.1.0
-author: Douglas Brain
-homepage:
+version: 0.1.1
+homepage: https://github.com/DarkerWaters/flic_button.git
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
