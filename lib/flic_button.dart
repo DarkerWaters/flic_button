@@ -99,28 +99,28 @@ class Flic2ButtonClick {
 
 abstract class Flic2Listener {
   /// called as a button is found by the plugin (while scanning)
-  void onButtonFound(Flic2Button button);
+  void onButtonFound(Flic2Button button) {}
 
   /// called as a button is discovered (by bluetooth address) by the plugin (while scanning)
-  void onButtonDiscovered(String buttonAddress);
+  void onButtonDiscovered(String buttonAddress) {}
 
   /// called as an already paired button is found by the plugin (while scanning)
-  void onPairedButtonDiscovered(Flic2Button button);
+  void onPairedButtonDiscovered(Flic2Button button) {}
 
   /// called by the plugin as a button is clicked
   void onButtonClicked(Flic2ButtonClick buttonClick);
 
   /// called by the plugin as a button becomes connected
-  void onButtonConnected();
+  void onButtonConnected() {}
 
   /// called by the plugin as a scan is started
-  void onScanStarted();
+  void onScanStarted() {}
 
   /// called by the plugin as a scan is completed
-  void onScanCompleted();
+  void onScanCompleted() {}
 
   /// called by the plugin as an unexpected error is encountered
-  void onFlic2Error(String error);
+  void onFlic2Error(String error) {}
 }
 
 /// the plugin to handle Flic2 buttons

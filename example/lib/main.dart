@@ -11,7 +11,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> implements Flic2Listener {
+class _MyAppState extends State<MyApp> with Flic2Listener {
   // flic2 starts and isn't scanning
   bool _isScanning = false;
 
@@ -223,6 +223,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onButtonConnected() {
+    super.onButtonConnected();
     // this changes the state of our list of buttons, set state for this
     setState(() {
       print('button connected');
@@ -231,6 +232,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onButtonDiscovered(String buttonAddress) {
+    super.onButtonDiscovered(buttonAddress);
     // this is an address which we should be able to resolve to an actual button right away
     print('button @$buttonAddress discovered');
     // but we could in theory wait for it to be connected and discovered because that will happen too
@@ -246,6 +248,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onButtonFound(Flic2Button button) {
+    super.onButtonFound(button);
     // we have found a new button, add to the list to show
     print('button ${button.uuid} found');
     // and add to the list to show
@@ -254,12 +257,14 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onFlic2Error(String error) {
+    super.onFlic2Error(error);
     // something went wrong somewhere, provide feedback maybe, or did you code something in the wrong order?
     print('ERROR: $error');
   }
 
   @override
   void onPairedButtonDiscovered(Flic2Button button) {
+    super.onPairedButtonDiscovered(button);
     print('paired button ${button.uuid} discovered');
     // discovered something already paired (getButtons will return these but maybe you didn't bother and
     // just went right into a scan)
@@ -268,6 +273,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onScanCompleted() {
+    super.onScanCompleted();
     // scan completed, update the state of our view
     setState(() {
       _isScanning = false;
@@ -276,6 +282,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onScanStarted() {
+    super.onScanStarted();
     // scan started, update the state of our view
     setState(() {
       _isScanning = true;

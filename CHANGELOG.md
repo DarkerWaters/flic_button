@@ -1,7 +1,10 @@
+## [0.1.2] 2021-08-18
+
+* Changed the Flic2ButtonListener to a mixin so you don't have to overload everything
+
 ## [0.1.1] 2021-08-18
 
 * Used <dart pub publish> to push the package to pub.dev and assigned it to a verified publisher
-
 
 ## [0.1.0] 2021-08-18
 

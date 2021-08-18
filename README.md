@@ -23,35 +23,58 @@ Then, more usefully, receive callbacks from the Flic 2 library to tell you someo
 
 At this time, there is no background service to keep the service alive and callback into flutter if destroyed. However, as long as the flutter app remains alive, so will the Flic 2 support.
 
+## Getting Started
+### Change the minSdkVersion for Android
+
+Flic2 buttons are compatible only from version 19 of Android SDK so you should change this in **android/app/build.gradle**:
+```dart
+Android {
+  defaultConfig {
+     minSdkVersion: 19
+```
+### Add permissions for Bluetooth
+We need to add the permission to use Bluetooth and access location:
+
+#### **Android**
+In the **android/app/src/main/AndroidManifest.xml** let’s add:
+
+```xml 
+	 <uses-permission android:name="android.permission.BLUETOOTH" />  
+	 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
+	 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>  
+ <application
+```
+#### **IOS**
+In the **ios/Runner/Info.plist** let’s add a number of permissions to enable bluetooth and location access. Also needed, at the bottom, is the ability to access BLE in the background...
+
+```dart 
+	<dict>  
+	    <key>NSBluetoothAlwaysUsageDescription</key>  
+	    <string>Need BLE permission</string>  
+	    <key>NSBluetoothPeripheralUsageDescription</key>  
+	    <string>Need BLE permission</string>  
+	    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>  
+	    <string>Need Location permission</string>  
+	    <key>NSLocationAlwaysUsageDescription</key>  
+	    <string>Need Location permission</string>  
+	    <key>NSLocationWhenInUseUsageDescription</key>  
+	    <string>Need Location permission</string>
+	    <key>UIBackgroundModes</key>
+        <array>
+            <string>bluetooth-central</string>
+        </array>
+```
+
+For location permissions on iOS see more at: [https://developer.apple.com/documentation/corelocation/requesting_authorization_for_location_services](https://developer.apple.com/documentation/corelocation/requesting_authorization_for_location_services)
+
 A simple usage example:
 
 ```dart
 import 'package:flic_button/flic_button.dart';
 
-class ButtonListener extends Flic2Listener {
+class ButtonListener with Flic2Listener {
   void onButtonClicked(Flic2ButtonClick buttonClick) {
     print('button ${buttonClick.button.uuid} clicked');
-  }
-  void onButtonConnected() {
-    print('button connected');
-  }
-  void onButtonDiscovered(String buttonAddress) {
-    print('button at $buttonAddress discovered');
-  }
-  void onButtonFound(Flic2Button button) {
-    print('button ${button.uuid} found');
-  }
-  void onFlic2Error(String error) {
-    print('error $error');
-  }
-  void onPairedButtonDiscovered(Flic2Button button) {
-    print('button ${button.uuid} discovered');
-  }
-  void onScanCompleted() {
-    print('scan completed');
-  }
-  void onScanStarted() {
-    print('scan started');
   }
 }
 
@@ -62,8 +85,23 @@ void main() {
   
   // YOU WILL ALSO need to add permisions for bluetooth LE accessories in your iOS and Android implementations
   
-  FlicButtonPlugin(flic2listener: ButtonListener());
-  plugin.scanForFlic2();
+  final plugin = FlicButtonPlugin(flic2listener: ButtonListener());
+  _flicPlugin = FlicButtonPlugin(flic2listener: this);
+  _flicPlugin.invokation.then((value) {
+    // have invoked the plugin here, get all the buttons to connect them up
+    return _flicPlugin.getFlic2Buttons();
+  }).then((value) {
+    if (value.isEmpty) {
+      // you don't have buttons in the manager, initiate a scan to find and connect a new one
+      _flicPlugin.scanForFlic2();
+    } else {
+      // here we have the buttons, listen to all of them
+      for (Flic2Button button in value) {
+        // listen to them all!
+        _flicPlugin.listenToFlic2Button(button.uuid);
+      }
+    }
+  });
 }
 ```
 
