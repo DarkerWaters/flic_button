@@ -8,8 +8,8 @@ Please see the [official Flic developer docs](https://github.com/50ButtonsEach/f
 
 ### Currently supported
 
-- [Android](https://github.com/50ButtonsEach/fliclib-android)
-- [iOS](https://github.com/50ButtonsEach/fliclib-ios)
+- [Android](https://github.com/50ButtonsEach/flic2lib-android)
+- [iOS](https://github.com/50ButtonsEach/flic2lib-ios)
 
 ### Planned support
 

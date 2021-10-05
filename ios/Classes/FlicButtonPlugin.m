@@ -283,7 +283,7 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
                           @"\"button\":%@"
                           @"}",
                           queued ? "true" : "false",
-                          age,
+                          age * 1000,  // because age in iOS is in seconds and not ms
                           queued ? "true" : "false",
                           0,
                           clicks == 1 ? "true" : "false",

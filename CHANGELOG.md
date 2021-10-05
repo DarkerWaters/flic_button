@@ -1,3 +1,11 @@
+## [0.1.5] 2021-08-32
+
+* oops - build error
+
+## [0.1.4] 2021-08-32
+
+* iOS click-age now reporting in ms rather than seconds to match the API from android version
+
 ## [0.1.3] 2021-08-18
 
 * iOS disposing the plugin doesn't error - returns 'no' or false that it can't. Can start again and it's cool.
