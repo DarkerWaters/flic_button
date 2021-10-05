@@ -118,7 +118,7 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
 				.append("\"firmwareVer\":").append(button.getFirmwareVersion()).append(",");
 		final BatteryLevel lastKnwonBatteryLevel = button.getLastKnownBatteryLevel();
 		if (lastKnwonBatteryLevel == null) {
-			sb.append("\"battPerc\":\"null\"")
+			sb.append("\"battPerc\":\"null\",")
 					.append("\"battTime\":\"null\",")
 					.append("\"battVolt\":\"null\",");
 		} else {
