@@ -1,3 +1,7 @@
+## [0.1.6] 2021-10-05
+
+* Thanks to vanlooverenkoen for fixing some issues with the Json and null battery status'
+
 ## [0.1.5] 2021-08-32
 
 * oops - build error

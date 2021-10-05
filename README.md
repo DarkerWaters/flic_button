@@ -83,7 +83,7 @@ void main() {
   //DON'T FORGET - you will need to ask for permissions for bluetooth and location to search and use
   //FLIC2 as it is a bluetooth button (use your fave plugin for this yourself)
   
-  // YOU WILL ALSO need to add permisions for bluetooth LE accessories in your iOS and Android implementations
+  // YOU WILL ALSO need to add permissions for bluetooth LE accessories in your iOS and Android implementations
   
   final plugin = FlicButtonPlugin(flic2listener: ButtonListener());
   _flicPlugin = FlicButtonPlugin(flic2listener: this);
