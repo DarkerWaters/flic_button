@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.flic.flic2libandroid.BatteryLevel;
 import io.flic.flic2libandroid.Flic2Button;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
@@ -106,21 +107,29 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
     return toReturn;
   }
 
-  private static String ButtonToJson(Flic2Button button) {
-    return "{" +
-            "\"uuid\":\"" + button.getUuid() + "\"," +
-            "\"bdAddr\":\"" + button.getBdAddr() + "\"," +
-            "\"readyTime\":" + button.getReadyTimestamp() + "," +
-            "\"name\":\"" + button.getName() + "\"," +
-            "\"serialNo\":\"" + button.getSerialNumber() + "\"," +
-            "\"connection\":" + button.getConnectionState() + "," +
-            "\"firmwareVer\":" + button.getFirmwareVersion() + "," +
-            "\"battPerc\":" + button.getLastKnownBatteryLevel().getEstimatedPercentage() + "," +
-            "\"battTime\":" + button.getLastKnownBatteryLevel().getTimestampUtcMs() + "," +
-            "\"battVolt\":" + button.getLastKnownBatteryLevel().getVoltage() + "," +
-            "\"pressCount\":" + button.getPressCount() + "" +
-            "}";
-  }
+	private static String ButtonToJson(Flic2Button button) {
+		final StringBuilder sb = new StringBuilder("{");
+		sb.append("\"uuid\":\"").append(button.getUuid()).append("\",")
+				.append("\"bdAddr\":\"").append(button.getBdAddr()).append("\",")
+				.append("\"readyTime\":").append(button.getReadyTimestamp()).append(",")
+				.append("\"name\":\"").append(button.getName()).append("\",")
+				.append("\"serialNo\":\"").append(button.getSerialNumber()).append("\",")
+				.append("\"connection\":").append(button.getConnectionState()).append(",")
+				.append("\"firmwareVer\":").append(button.getFirmwareVersion()).append(",");
+		final BatteryLevel lastKnwonBatteryLevel = button.getLastKnownBatteryLevel();
+		if (lastKnwonBatteryLevel == null) {
+			sb.append("\"battPerc\":null,")
+					.append("\"battTime\":null,")
+					.append("\"battVolt\":null,");
+		} else {
+			sb.append("\"battPerc\":").append(button.getLastKnownBatteryLevel().getEstimatedPercentage()).append(",")
+					.append("\"battTime\":").append(button.getLastKnownBatteryLevel().getTimestampUtcMs()).append(",")
+					.append("\"battVolt\":").append(button.getLastKnownBatteryLevel().getVoltage()).append(",");
+		}
+		sb.append("\"pressCount\":").append(button.getPressCount()).append("")
+				.append("}");
+		return sb.toString();
+	}
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull final Result result) {

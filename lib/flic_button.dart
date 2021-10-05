@@ -32,13 +32,13 @@ class Flic2Button {
   final int firmwareVersion;
 
   /// the state of the battery % so from 0 - 100
-  final int battPercentage;
+  final int? battPercentage;
 
   /// the timestamp the batter data was stored (not iOS)
-  final int battTimestamp;
+  final int? battTimestamp;
 
   /// the current voltage of the battery
-  final double battVoltage;
+  final double? battVoltage;
 
   /// a global counter of how often this button has been clicked
   final int pressCount;
