@@ -39,10 +39,12 @@ We need to add the permission to use Bluetooth and access location:
 In the **android/app/src/main/AndroidManifest.xml** let’s add:
 
 ```xml 
-	 <uses-permission android:name="android.permission.BLUETOOTH" />  
-	 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
-	 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>  
- <application
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <application
 ```
 #### **IOS**
 In the **ios/Runner/Info.plist** let’s add a number of permissions to enable bluetooth and location access. Also needed, at the bottom, is the ability to access BLE in the background...
