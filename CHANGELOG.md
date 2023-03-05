@@ -1,3 +1,7 @@
+## [0.1.7] 2023-03-05
+
+* Upgraded to flutter version 3 and removed the Flic simlinks causing publish to fail
+
 ## [0.1.6] 2021-10-05
 
 * Thanks to vanlooverenkoen for fixing some issues with the Json and null battery status'
