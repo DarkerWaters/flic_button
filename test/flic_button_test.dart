@@ -1,17 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flic_button/flic_button.dart';
+import 'package:logging/logging.dart';
 
 class ButtonListener with Flic2Listener {
+  
+  final log = Logger('FlicButtonPluginTest');
+  @override
   void onButtonClicked(Flic2ButtonClick buttonClick) {
-    print('button ${buttonClick.button.uuid} clicked');
+    log.info('button ${buttonClick.button.uuid} clicked');
   }
 
+  @override
   void onScanCompleted() {
-    print('scan completed');
+    log.info('scan completed');
   }
 
+  @override
   void onScanStarted() {
-    print('scan started');
+    log.info('scan started');
   }
 }
 

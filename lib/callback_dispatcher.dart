@@ -5,14 +5,14 @@ import 'package:flutter/services.dart';
 
 void callbackDispatcher() {
   // 1. Initialize MethodChannel used to communicate with the platform portion of the plugin.
-  const MethodChannel _backgroundChannel =
+  const MethodChannel backgroundChannel =
       MethodChannel('flic2_background_channel');
 
   // 2. Setup internal state needed for MethodChannels.
   WidgetsFlutterBinding.ensureInitialized();
 
   // 3. Listen for background events from the platform portion of the plugin.
-  _backgroundChannel.setMethodCallHandler((MethodCall call) async {
+  backgroundChannel.setMethodCallHandler((MethodCall call) async {
     final List<dynamic> args = call.arguments;
 
     // 3.1. Retrieve callback instance for handle.

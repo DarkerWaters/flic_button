@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
   }
 
   void _startStopFlic2() {
-    // start or stop the plugin (iOS doesn's stop)
+    // start or stop the plugin (iOS doesn't stop)
     if (null == flicButtonManager) {
       // we are not started - start listening to FLIC2 buttons
       setState(() => flicButtonManager = FlicButtonPlugin(flic2listener: this));
@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
   }
 
   void _forgetButton(Flic2Button button) {
-    // forget the passed button so it disapears and we can search again
+    // forget the passed button so it disappears and we can search again
     flicButtonManager!.forgetButton(button.uuid).then((value) {
       if (value != null && value) {
         // button was removed

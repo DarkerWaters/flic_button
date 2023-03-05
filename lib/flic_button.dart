@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 
 enum Flic2ButtonConnectionState {
   disconnected,
   connecting,
+  // ignore: constant_identifier_names
   connecting_starting,
+  // ignore: constant_identifier_names
   connected_ready,
 }
 
@@ -142,25 +145,39 @@ class FlicButtonPlugin {
   static const String _methodNameDisconnectButton = "disconnectButton";
   static const String _methodNameForgetButton = "forgetButton";
 
+  // ignore: constant_identifier_names
   static const String ERROR_CRITICAL = 'CRITICAL';
+  // ignore: constant_identifier_names
   static const String ERROR_NOT_STARTED = 'NOT_STARTED';
+  // ignore: constant_identifier_names
   static const String ERROR_ALREADY_STARTED = 'ALREADY_STARTED';
+  // ignore: constant_identifier_names
   static const String ERROR_INVALID_ARGUMENTS = 'INVALID_ARGUMENTS';
 
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_DISCOVER_PAIRED = 100;
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_DISCOVERED = 101;
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_CONNECTED = 102;
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_CLICK = 103;
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_SCANNING = 104;
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_SCAN_COMPLETE = 105;
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_FOUND = 106;
+  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_ERROR = 200;
 
-  static const MethodChannel _channel = const MethodChannel(_channelName);
+  static const MethodChannel _channel = MethodChannel(_channelName);
 
   Future<bool?>? _invokationFuture;
 
   final Flic2Listener flic2listener;
+  
+  final log = Logger('FlicButtonPlugin');
 
   FlicButtonPlugin({required this.flic2listener}) {
     // set the callback handler to ours to receive all our data back after
@@ -270,13 +287,15 @@ class FlicButtonPlugin {
   Flic2Button _createFlic2FromData(Object data) {
     try {
       // create a button from this json data
-      var json;
+      Map json;
       if (data is String) {
         // from string data, let's get the map of data
         json = jsonDecode(data);
-      } else {
+      } else if (data is Map) {
         // this is JSON already, so just use as-is
         json = data;
+      } else {
+        throw ('data $data is not a string or a map');
       }
       return Flic2Button(
         uuid: json['uuid'],
@@ -292,9 +311,9 @@ class FlicButtonPlugin {
         pressCount: json['pressCount'],
       );
     } catch (error) {
-      print('data back is not a valid button: $data $error');
+      log.warning('data back is not a valid button: $data $error');
       // return an error button
-      return Flic2Button(
+      return const Flic2Button(
           uuid: '',
           buttonAddr: '',
           readyTimestamp: 0,
@@ -324,7 +343,7 @@ class FlicButtonPlugin {
         button: _createFlic2FromData(json['button']),
       );
     } catch (error) {
-      print('data back is not a valid click: $data $error');
+      log.warning('data back is not a valid click: $data $error');
       // return error button click data
       return Flic2ButtonClick(
         wasQueued: false,
@@ -341,7 +360,7 @@ class FlicButtonPlugin {
 
   /// called back from the native with the relevant data
   Future<void> _methodCallHandler(MethodCall call) async {
-    // this is called from the other side when there's something happening in whic
+    // this is called from the other side when there's something happening in which
     // we are interested, the ID of the method determines what is sent back
     switch (call.method) {
       case _methodNameCallback:
@@ -386,12 +405,12 @@ class FlicButtonPlugin {
             flic2listener.onFlic2Error(methodData);
             break;
           default:
-            print('unrecognised method callback encountered $methodId');
+            log.severe('unrecognised method callback encountered $methodId');
             break;
         }
         break;
       default:
-        print('Ignoring unrecognosed invoke from native ${call.method}');
+        log.warning('Ignoring unrecognised invoke from native ${call.method}');
         break;
     }
   }
