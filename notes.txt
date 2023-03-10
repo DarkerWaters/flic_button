@@ -1,9 +1,0 @@
-Finally created something that builds using
-https://medium.com/flutter-community/creating-a-flutter-plugin-dialog-box-78adbff15fe
-* the start-point is to create a new flutter plugin project using AndroidStudio
-
-Running!
-* you can load the main folder as a dart project and run the example/main.dart
-* you can also load the /android/build.gradle into AndroidStuio to run that
-* flutter build ios --no-codesign for the /example/ project workse well
-* xCode can load /example/ios/Runner.xcworkspace

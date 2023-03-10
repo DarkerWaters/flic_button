@@ -1,10 +1,10 @@
 name: flic_button
 description: An interface to the flic2 button.
-version: 0.1.7
+version: 0.1.8
 homepage: https://github.com/DarkerWaters/flic_button.git
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: ">=2.19.4 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -20,7 +20,7 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
-# The following section is specific to Flutter.
+# The following section is specific to Flutter packages.
 flutter:
   # This section identifies this Flutter project as a plugin project.
   # The 'pluginClass' and Android 'package' identifiers should not ordinarily
@@ -34,7 +34,7 @@ flutter:
       ios:
         pluginClass: FlicButtonPlugin
 
-  # To add assets to your plugin package, add an assets section, like this:
+  # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
@@ -43,4 +43,4 @@ flutter:
   # https://flutter.dev/assets-and-images/#from-packages
   #
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
+  # https://flutter.dev/assets-and-images/#resolution-aware

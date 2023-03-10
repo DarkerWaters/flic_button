@@ -1,3 +1,7 @@
+## [0.1.8] 2023-03-10
+
+* Updated to the latest flutter and xCode for iOS building properly
+
 ## [0.1.7] 2023-03-05
 
 * Upgraded to flutter version 3 and removed the Flic simlinks causing publish to fail
