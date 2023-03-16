@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:flic_button/flic_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,10 +33,14 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
     _startStopFlic2();
   }
 
-  void _startStopScanningForFlic2() {
+  void _startStopScanningForFlic2() async {
     // start scanning for new buttons
     if (!_isScanning) {
-      // not scanning yet - start
+      // not scanning yet - start - flic 2 needs permissions for FINE_LOCATION
+      // when on android to perform this action
+      if (Platform.isAndroid && !await Permission.location.isGranted) {
+        await Permission.location.request();
+      }
       flicButtonManager!.scanForFlic2();
     } else {
       // are scanning - cancel that

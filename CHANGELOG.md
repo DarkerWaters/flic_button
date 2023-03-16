@@ -1,3 +1,7 @@
+## [0.1.9] 2023-03-16
+
+* Flic2 on Android requires that the app has permission to FINE_LOCATION, changed the example to request this if missing
+
 ## [0.1.8] 2023-03-10
 
 * Updated to the latest flutter and xCode for iOS building properly
