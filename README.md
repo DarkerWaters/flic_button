@@ -119,5 +119,5 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 ## License
 
-Dart flic_button by Douglas Brain is licensed under MIT LICENCE
+Dart flic_button by Douglas Brain (Darker Waters LTD) is licensed under the Modified BSD License
 
