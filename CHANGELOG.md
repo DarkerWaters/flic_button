@@ -1,3 +1,7 @@
+## [1.0.1] 2023-05-22
+
+* Shrunk the description to get max points in pub.dev
+
 ## [1.0.0] 2023-05-22
 
 * Have wrapped the creation of JSON with try--catch to ensure strange names on the flic button no longer cause problems
