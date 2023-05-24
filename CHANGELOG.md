@@ -1,3 +1,7 @@
+## [1.0.2] 2023-05-24
+
+* Exporting the MainActivity for the example to work on newer (API 31+) phones
+
 ## [1.0.1] 2023-05-22
 
 * Shrunk the description to get max points in pub.dev
