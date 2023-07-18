@@ -1,3 +1,7 @@
+## [1.1.0] 2023-07-18
+
+* Managing a return of invalid JSON in the name of the Flic2 button now, as well as the example requesting BLUETOOTH_SCAN and BLUETOOTH_CONNECT permissions as now required in Android
+
 ## [1.0.2] 2023-05-24
 
 * Exporting the MainActivity for the example to work on newer (API 31+) phones

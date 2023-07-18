@@ -176,7 +176,7 @@ class FlicButtonPlugin {
   Future<bool?>? _invokationFuture;
 
   final Flic2Listener flic2listener;
-  
+
   final log = Logger('FlicButtonPlugin');
 
   FlicButtonPlugin({required this.flic2listener}) {
@@ -283,14 +283,49 @@ class FlicButtonPlugin {
     }
   }
 
+  /// Replaces all characters that can not exist unencoded in a JSON
+  /// with their JSON-encoded representations.
+  String replaceInvalidJsonCharacters(String json,
+      {bool isEncodeNonJsonChars = true}) {
+    var charCodes = <int>[];
+
+    for (final int codeUnit in json.codeUnits) {
+      if (codeUnit >= 32 && codeUnit <= 255) {
+        // ASCII 32...255 are guaranteed to be valid in a JSON
+        charCodes.add(codeUnit);
+      } else if (isEncodeNonJsonChars) {
+        // Json-encode the character and add the encoded version.
+        // For characters that are valid in a JSON, the encoded version is the same
+        // as the original (possibly surrounded by "").
+        try {
+          String encoded = jsonEncode(String.fromCharCode(codeUnit));
+          if (encoded.length > 1) {
+            if (encoded.startsWith('"')) {
+              encoded = encoded.substring(1, encoded.length);
+            }
+            if (encoded.endsWith('"')) {
+              encoded = encoded.substring(0, encoded.length - 1);
+            }
+          }
+          charCodes.addAll(encoded.codeUnits);
+        } catch (error) {
+          print('error in encoded json char of $codeUnit');
+        }
+      }
+    }
+    // and return the created string properly
+    return String.fromCharCodes(charCodes);
+  }
+
   /// helper to convert the json from native to the object passed around in flutter
   Flic2Button _createFlic2FromData(Object data) {
     try {
       // create a button from this json data
       Map json;
       if (data is String) {
-        // from string data, let's get the map of data
-        json = jsonDecode(data);
+        // from string data, let's get the map of data, but this can contain invalid control characters
+        // that we need to remove
+        json = jsonDecode(replaceInvalidJsonCharacters(data));
       } else if (data is Map) {
         // this is JSON already, so just use as-is
         json = data;
@@ -311,7 +346,7 @@ class FlicButtonPlugin {
         pressCount: json['pressCount'],
       );
     } catch (error) {
-      log.warning('data back is not a valid button: $data $error');
+      print('data back is not a valid button: $data $error');
       // return an error button
       return const Flic2Button(
           uuid: '',
@@ -331,7 +366,7 @@ class FlicButtonPlugin {
   /// helper to convert the json from native to the object passed around in flutter
   Flic2ButtonClick _createFlic2ClickFromData(String data) {
     try {
-      final json = jsonDecode(data);
+      final json = jsonDecode(replaceInvalidJsonCharacters(data));
       return Flic2ButtonClick(
         wasQueued: json['wasQueued'],
         clickAge: json['clickAge'],

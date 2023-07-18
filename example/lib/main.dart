@@ -36,7 +36,12 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
   void _startStopScanningForFlic2() async {
     // start scanning for new buttons
     if (!_isScanning) {
-      // not scanning yet - start - flic 2 needs permissions for FINE_LOCATION
+      // not scanning yet - start by asking for bluetooth scan and connect permissions
+      if (!await Permission.bluetoothScan.request().isGranted ||
+          !await Permission.bluetoothConnect.request().isGranted) {
+        print('cannot scan for a button when scanning is not permitted');
+      }
+      // flic 2 needs permissions for FINE_LOCATION
       // when on android to perform this action
       if (Platform.isAndroid && !await Permission.location.isGranted) {
         await Permission.location.request();
@@ -87,9 +92,14 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
     });
   }
 
-  void _connectDisconnectButton(Flic2Button button) {
+  Future<void> _connectDisconnectButton(Flic2Button button) async {
     // if disconnected, connect, else disconnect the button
     if (button.connectionState == Flic2ButtonConnectionState.disconnected) {
+      // we need permission to connect to a button please
+      if (!await Permission.bluetoothConnect.request().isGranted) {
+        print(
+            'cannot connect to a button when bluetooth connect is not permitted');
+      }
       flicButtonManager!.connectButton(button.uuid);
     } else {
       flicButtonManager!.disconnectButton(button.uuid);
