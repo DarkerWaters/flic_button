@@ -309,7 +309,7 @@ class FlicButtonPlugin {
           }
           charCodes.addAll(encoded.codeUnits);
         } catch (error) {
-          print('error in encoded json char of $codeUnit');
+          log.warning('error in encoded json char of $codeUnit');
         }
       }
     }
@@ -346,7 +346,7 @@ class FlicButtonPlugin {
         pressCount: json['pressCount'],
       );
     } catch (error) {
-      print('data back is not a valid button: $data $error');
+      log.warning('data back is not a valid button: $data $error');
       // return an error button
       return const Flic2Button(
           uuid: '',
