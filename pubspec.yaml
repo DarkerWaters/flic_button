@@ -1,5 +1,5 @@
 name: flic_button
-description: An interface to the flic2 libraries for iOS and Android wrapping the offical ones supplied by flic.io (50ButtonsEach).
+description: An interface to the flic2 libraries for iOS and Android wrapping the official ones supplied by flic.io (50ButtonsEach).
 version: 1.1.0
 homepage: https://github.com/DarkerWaters/flic_button.git
 
@@ -10,12 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  logging: ^1.1.1
+  logging: ^1.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
