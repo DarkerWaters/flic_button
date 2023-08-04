@@ -20,6 +20,8 @@ public class Flic2Controller {
 
     private final ButtonCallback callback;
 
+    private boolean isCurrentlyScanning = false;
+
     public interface ButtonCallback {
         void onPairedButtonFound(Flic2Button button);
         void onButtonFound(Flic2Button button);
@@ -39,10 +41,13 @@ public class Flic2Controller {
     }
 
     public boolean startButtonScanning() {
-        // cancel any previous scan
-        cancelButtonScan();
+        if (isCurrentlyScanning){
+            // cancel any previous scan
+            cancelButtonScan();
+        }
         // and start a new one
         callback.onButtonScanningStarted();
+        isCurrentlyScanning = true;
         Flic2Manager.getInstance().startScan(new Flic2ScanCallback() {
             @Override
             public void onDiscoveredAlreadyPairedButton(Flic2Button button) {
@@ -64,6 +69,7 @@ public class Flic2Controller {
             @Override
             public void onComplete(int result, int subCode, Flic2Button button) {
                 callback.onButtonScanningStopped();
+                isCurrentlyScanning = false;
                 if (result == Flic2ScanCallback.RESULT_SUCCESS) {
                     // The button object can now be used, store this
                     storeButtonData(button);

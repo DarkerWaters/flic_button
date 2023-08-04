@@ -27,7 +27,7 @@ At this time, there is no background service to keep the service alive and callb
 ### Change the minSdkVersion for Android
 
 Flic2 buttons are compatible only from version 19 of Android SDK so you should change this in **android/app/build.gradle**:
-```dart
+```groovy
 Android {
   defaultConfig {
      minSdkVersion: 19
