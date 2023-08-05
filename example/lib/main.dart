@@ -36,9 +36,14 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
   void _startStopScanningForFlic2() async {
     // start scanning for new buttons
     if (!_isScanning) {
-      // not scanning yet - start by asking for bluetooth scan and connect permissions
-      if (!await Permission.bluetoothScan.request().isGranted ||
-          !await Permission.bluetoothConnect.request().isGranted) {
+      // we need permission to scan for a button please, iOS needs bluetooth
+      // permission, whereas android also has scan and connect permissions that
+      // we will need before scanning and connecting to Flic 2
+      final isGranted = await Permission.bluetooth.request().isGranted &&
+          (!Platform.isAndroid ||
+              (await Permission.bluetoothScan.request().isGranted &&
+                  await Permission.bluetoothConnect.request().isGranted));
+      if (!isGranted) {
         print('cannot scan for a button when scanning is not permitted');
       }
       // flic 2 needs permissions for FINE_LOCATION
@@ -46,10 +51,10 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
       if (Platform.isAndroid && !await Permission.location.isGranted) {
         await Permission.location.request();
       }
-      flicButtonManager!.scanForFlic2();
+      flicButtonManager?.scanForFlic2();
     } else {
       // are scanning - cancel that
-      flicButtonManager!.cancelScanForFlic2();
+      flicButtonManager?.cancelScanForFlic2();
     }
     // update the UI
     setState(() {
@@ -64,7 +69,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
       setState(() => flicButtonManager = FlicButtonPlugin(flic2listener: this));
     } else {
       // started - so stop
-      flicButtonManager!.disposeFlic2().then((value) => setState(() {
+      flicButtonManager?.disposeFlic2().then((value) => setState(() {
             // as the flic manager is disposed, signal that it's gone
             flicButtonManager = null;
           }));
@@ -73,7 +78,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
 
   void _getButtons() {
     // get all the buttons from the plugin that were there last time
-    flicButtonManager!.getFlic2Buttons().then((buttons) {
+    flicButtonManager?.getFlic2Buttons().then((buttons) {
       // put all of these in the list to show the buttons
       buttons.forEach((button) {
         _addButtonAndListen(button);
@@ -88,7 +93,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
       // add the button to the map
       _buttonsFound[button.uuid] = button;
       // and listen to the button for clicks and things
-      flicButtonManager!.listenToFlic2Button(button.uuid);
+      flicButtonManager?.listenToFlic2Button(button.uuid);
     });
   }
 
@@ -100,15 +105,15 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
         print(
             'cannot connect to a button when bluetooth connect is not permitted');
       }
-      flicButtonManager!.connectButton(button.uuid);
+      flicButtonManager?.connectButton(button.uuid);
     } else {
-      flicButtonManager!.disconnectButton(button.uuid);
+      flicButtonManager?.disconnectButton(button.uuid);
     }
   }
 
   void _forgetButton(Flic2Button button) {
     // forget the passed button so it disappears and we can search again
-    flicButtonManager!.forgetButton(button.uuid).then((value) {
+    flicButtonManager?.forgetButton(button.uuid).then((value) {
       if (value != null && value) {
         // button was removed
         setState(() {
@@ -128,7 +133,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
           ),
           body: FutureBuilder(
             future: flicButtonManager != null
-                ? flicButtonManager!.invokation
+                ? flicButtonManager?.invokation
                 : null,
             builder: (ctx, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
@@ -253,7 +258,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
     // this is an address which we should be able to resolve to an actual button right away
     print('button @$buttonAddress discovered');
     // but we could in theory wait for it to be connected and discovered because that will happen too
-    flicButtonManager!.getFlic2ButtonByAddress(buttonAddress).then((button) {
+    flicButtonManager?.getFlic2ButtonByAddress(buttonAddress).then((button) {
       if (button != null) {
         print(
             'button found with address $buttonAddress resolved to actual button data ${button.uuid}');

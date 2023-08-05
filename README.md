@@ -44,12 +44,11 @@ In the **android/app/src/main/AndroidManifest.xml** let’s add:
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <application
 ```
 #### **IOS**
 In the **ios/Runner/Info.plist** let’s add a number of permissions to enable bluetooth and location access. Also needed, at the bottom, is the ability to access BLE in the background...
 
-```dart 
+```xml 
 	<dict>  
         <key>NSBluetoothAlwaysUsageDescription</key>  
         <string>Need BLE permission</string>  
@@ -84,6 +83,15 @@ void main() {
   
   //DON'T FORGET - you will need to ask for permissions for bluetooth and location to search and use
   //FLIC2 as it is a bluetooth button (use your fave plugin for this yourself)
+  /*
+  final isGranted = await Permission.bluetooth.request().isGranted &&
+          (!Platform.isAndroid ||
+              (await Permission.bluetoothScan.request().isGranted &&
+               await Permission.bluetoothConnect.request().isGranted &&
+               await Permission.location.request().isGranted
+              )
+          );
+  */
   
   // YOU WILL ALSO need to add permissions for bluetooth LE accessories in your iOS and Android implementations
   
