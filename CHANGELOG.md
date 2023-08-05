@@ -1,3 +1,7 @@
+## [1.1.1] 2023-08-05
+
+* Accepted pull from Matthias Schicker (komaxx) to prevent the FlicController sending an 'onButtonScanningStopped' prior to the first 'onButtonScanningStarted' message that it was sending each time you initiated scanning
+
 ## [1.1.0] 2023-07-18
 
 * Managing a return of invalid JSON in the name of the Flic2 button now, as well as the example requesting BLUETOOTH_SCAN and BLUETOOTH_CONNECT permissions as now required in Android

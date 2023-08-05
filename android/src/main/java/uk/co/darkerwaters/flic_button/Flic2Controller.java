@@ -41,12 +41,11 @@ public class Flic2Controller {
     }
 
     public boolean startButtonScanning() {
-        if (isCurrentlyScanning){
-            // cancel any previous scan
-            cancelButtonScan();
-        }
+        // cancel any previous scan
+        cancelButtonScan();
         // and start a new one
         callback.onButtonScanningStarted();
+        // and remember that we are
         isCurrentlyScanning = true;
         Flic2Manager.getInstance().startScan(new Flic2ScanCallback() {
             @Override
@@ -85,7 +84,10 @@ public class Flic2Controller {
 
     public boolean cancelButtonScan() {
         // cancel any scanning in progress
-        callback.onButtonScanningStopped();
+        if (isCurrentlyScanning) {
+            // inform the listeners that we stopped something previously scanning
+            callback.onButtonScanningStopped();
+        }
         try {
             Flic2Manager manager = Flic2Manager.getInstance();
             if (null != manager) {
