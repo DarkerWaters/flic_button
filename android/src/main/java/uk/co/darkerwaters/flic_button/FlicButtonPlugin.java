@@ -1,7 +1,6 @@
 package uk.co.darkerwaters.flic_button;
 
 import android.content.Context;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
@@ -51,6 +50,9 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
   public static final int METHOD_FLIC2_SCANNING = 104;
   public static final int METHOD_FLIC2_SCAN_COMPLETE = 105;
   public static final int METHOD_FLIC2_FOUND = 106;
+  public static final int METHOD_FLIC2_RE_CONNECTED = 107;
+  public static final int METHOD_FLIC2_CONNECTION_LOST = 108;
+  public static final int METHOD_FLIC2_BUTTON_UP_DOWN = 109;
   public static final int METHOD_FLIC2_ERROR = 200;
 
   /// The MethodChannel that will the communication between Flutter and native
@@ -378,6 +380,21 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
           + isDoubleClick + "," + "\"isHold\":" + isHold + "," + "\"button\":" + ButtonToJson(button) + "}";
       // and send back
       informListeners(METHOD_FLIC2_CLICK, jsonData);
+    }
+
+    @Override
+    public void onButtonReConnected(Flic2Button button) {
+      informListeners(METHOD_FLIC2_RE_CONNECTED, ButtonToJson(button));
+    }
+
+    @Override
+    public void onButtonConnectionLost(Flic2Button button) {
+      informListeners(METHOD_FLIC2_CONNECTION_LOST, ButtonToJson(button));
+    }
+
+    @Override
+    public void onButtonUpOrDown(Flic2Button button, boolean down) {
+      informListeners(METHOD_FLIC2_BUTTON_UP_DOWN, "{ \"down\": " + down +",  \"button\": " + ButtonToJson(button) + "}");
     }
   };
 
