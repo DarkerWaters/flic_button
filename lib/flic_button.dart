@@ -421,7 +421,7 @@ class FlicButtonPlugin {
       );
     } catch (error) {
       log.warning('data back is not a valid upOrDown: $data $error');
-      // return error button click data
+      // return error button up and down data
       return Flic2ButtonUpOrDown(
         button: _createFlic2FromData(''),
         isDown: false,
@@ -431,6 +431,8 @@ class FlicButtonPlugin {
 
   /// called back from the native with the relevant data
   Future<void> _methodCallHandler(MethodCall call) async {
+    log.warning('processing: ${call.method} ${call.arguments}');
+
     // this is called from the other side when there's something happening in which
     // we are interested, the ID of the method determines what is sent back
     switch (call.method) {

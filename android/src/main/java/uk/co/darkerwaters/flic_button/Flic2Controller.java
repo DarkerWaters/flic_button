@@ -241,6 +241,12 @@ public class Flic2Controller {
         }
 
         @Override
+        public void onConnect(Flic2Button button) {
+            super.onConnect(button);
+            callback.onButtonReConnected(button);
+        }
+
+        @Override
         public void onDisconnect(Flic2Button button) {
             super.onDisconnect(button);
             callback.onButtonConnectionLost(button);
