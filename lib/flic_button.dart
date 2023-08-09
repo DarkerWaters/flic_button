@@ -139,15 +139,6 @@ abstract class Flic2Listener {
   /// called by the plugin as an unexpected error is encountered
   void onFlic2Error(String error) {}
 
-  /// called by the plugin as the connection to the specified button was established.
-  /// This means, the button is in range, still paired to us, and we're ready
-  /// to receive click events from it.
-  void onButtonReConnected(Flic2Button button) {}
-
-  /// called by the plugin when the connection to the specified button was lost
-  /// for some reason (e.g., went out of Bluetooth reach)
-  void onButtonConnectionLost(Flic2Button button) {}
-
   /// called by the plugin when a connected button was pressed or released.
   /// Events of this type are "live", i.e., happened very recently.
   void onButtonUpOrDown(Flic2ButtonUpOrDown button) {}
@@ -184,9 +175,7 @@ class FlicButtonPlugin {
   static const int METHOD_FLIC2_SCANNING = 104;
   static const int METHOD_FLIC2_SCAN_COMPLETE = 105;
   static const int METHOD_FLIC2_FOUND = 106;
-  static const int METHOD_FLIC2_RE_CONNECTED = 107;
-  static const int METHOD_FLIC2_CONNECTION_LOST = 108;
-  static const int METHOD_FLIC2_BUTTON_UP_DOWN = 109;
+  static const int METHOD_FLIC2_BUTTON_UP_DOWN = 107;
   static const int METHOD_FLIC2_ERROR = 200;
 
   static const MethodChannel _channel = MethodChannel(_channelName);
@@ -476,13 +465,6 @@ class FlicButtonPlugin {
           case METHOD_FLIC2_ERROR:
             // process this method - scanning for buttons completed
             flic2listener.onFlic2Error(methodData);
-            break;
-          case METHOD_FLIC2_RE_CONNECTED:
-            flic2listener.onButtonReConnected(_createFlic2FromData(methodData));
-            break;
-          case METHOD_FLIC2_CONNECTION_LOST:
-            flic2listener
-                .onButtonConnectionLost(_createFlic2FromData(methodData));
             break;
           case METHOD_FLIC2_BUTTON_UP_DOWN:
             flic2listener

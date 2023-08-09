@@ -22,25 +22,13 @@ public class Flic2Controller {
 
     public interface ButtonCallback {
         void onPairedButtonFound(Flic2Button button);
-
         void onButtonFound(Flic2Button button);
-
         void onButtonConnected();
-
         void onButtonDiscovered(String buttonAddress);
-
         void onButtonScanningStarted();
-
         void onButtonScanningStopped();
-
-
         void onError(String error);
-
         void onButtonClicked(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold);
-
-        void onButtonReConnected(Flic2Button button);
-
-        void onButtonConnectionLost(Flic2Button button);
 
         /**
          * Called for live button down/up events.
@@ -232,24 +220,6 @@ public class Flic2Controller {
             super.onButtonSingleOrDoubleClickOrHold(button, wasQueued, lastQueued, timestamp, isSingleClick, isDoubleClick, isHold);
             // and pass this button press from Flic2 on to our application
             callback.onButtonClicked(button, wasQueued, lastQueued, timestamp, isSingleClick, isDoubleClick, isHold);
-        }
-
-        @Override
-        public void onReady(Flic2Button button, long timestamp) {
-            super.onReady(button, timestamp);
-            callback.onButtonReConnected(button);
-        }
-
-        @Override
-        public void onConnect(Flic2Button button) {
-            super.onConnect(button);
-            callback.onButtonReConnected(button);
-        }
-
-        @Override
-        public void onDisconnect(Flic2Button button) {
-            super.onDisconnect(button);
-            callback.onButtonConnectionLost(button);
         }
 
         @Override
