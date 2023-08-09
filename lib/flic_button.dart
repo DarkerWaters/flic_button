@@ -420,8 +420,6 @@ class FlicButtonPlugin {
 
   /// called back from the native with the relevant data
   Future<void> _methodCallHandler(MethodCall call) async {
-    log.warning('processing: ${call.method} ${call.arguments}');
-
     // this is called from the other side when there's something happening in which
     // we are interested, the ID of the method determines what is sent back
     switch (call.method) {
