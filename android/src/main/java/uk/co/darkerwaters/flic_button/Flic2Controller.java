@@ -2,9 +2,7 @@ package uk.co.darkerwaters.flic_button;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +27,13 @@ public class Flic2Controller {
         void onButtonDiscovered(String buttonAddress);
         void onButtonScanningStarted();
         void onButtonScanningStopped();
-        void onButtonClicked(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold);
         void onError(String error);
+        void onButtonClicked(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold);
+
+        /**
+         * Called for live button down/up events.
+         */
+        void onButtonUpOrDown(Flic2Button button, boolean down);
     }
 
     public Flic2Controller(Context context, ButtonCallback callback) {
@@ -55,16 +58,19 @@ public class Flic2Controller {
                 // and inform the caller of this state
                 callback.onPairedButtonFound(button);
             }
+
             @Override
             public void onDiscovered(String bdAddr) {
                 // Found Flic2, now connecting, inform the caller of this state
                 callback.onButtonDiscovered(bdAddr);
             }
+
             @Override
             public void onConnected() {
                 // connecting to a flic button
                 callback.onButtonConnected();
             }
+
             @Override
             public void onComplete(int result, int subCode, Flic2Button button) {
                 callback.onButtonScanningStopped();
@@ -94,8 +100,7 @@ public class Flic2Controller {
                 manager.stopScan();
                 return true;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             callback.onError("Failed to stop scan while releasing flick " + e.getMessage());
         }
         return false;
@@ -107,7 +112,7 @@ public class Flic2Controller {
             buttonsDiscovered.put(button.getUuid(), button);
         }
     }
-    
+
     public List<Flic2Button> getButtonsDiscovered() {
         List<Flic2Button> buttons = Flic2Manager.getInstance().getButtons();
         for (Flic2Button button : buttons) {
@@ -116,7 +121,7 @@ public class Flic2Controller {
         }
         return buttons;
     }
-    
+
     public Flic2Button getButtonForAddress(String buttonAddress) {
         return Flic2Manager.getInstance().getButtonByBdAddr(buttonAddress);
     }
@@ -168,7 +173,7 @@ public class Flic2Controller {
             return true;
         }
     }
-    
+
     public boolean listenToButton(String buttonUuid) {
         // get the button to listen to from our map and then listen to it
         Flic2Button button;
@@ -216,6 +221,16 @@ public class Flic2Controller {
             // and pass this button press from Flic2 on to our application
             callback.onButtonClicked(button, wasQueued, lastQueued, timestamp, isSingleClick, isDoubleClick, isHold);
         }
+
+        @Override
+        public void onButtonUpOrDown(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isUp, boolean isDown) {
+            super.onButtonUpOrDown(button, wasQueued, lastQueued, timestamp, isUp, isDown);
+
+            if (!wasQueued) { // only emitted for "live" events.
+                // Omitting `isUp`: Guaranteed by the SDK to be !isDown. No value gained by keeping it.
+                callback.onButtonUpOrDown(button, isDown);
+            }
+        }
     };
 
     public boolean releaseFlic() {
@@ -235,8 +250,7 @@ public class Flic2Controller {
                 }
                 return true;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             callback.onError("Failed to destroy the flic two instance as it was not initialised " + e.getMessage());
         }
         return false;
