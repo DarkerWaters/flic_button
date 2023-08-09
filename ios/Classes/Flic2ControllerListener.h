@@ -8,5 +8,6 @@
 - (void) onButtonScanningStarted;
 - (void) onButtonScanningStopped;
 - (void) onButtonClicked:(FLICButton*)button wasQueued:(BOOL)queued at:(NSInteger)age withClicks:(NSInteger)clicks;
+- (void) onButtonUpOrDown:(FLICButton*)button down:(BOOL)down;
 - (void) onError:(NSString*)errorString;
 @end
