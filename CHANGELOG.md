@@ -1,3 +1,7 @@
+## [1.2.0] 2023-08-05
+
+* Accepted pull from Matthias Schicker (komaxx) to add the function to the available interface to listen to button press and release events from the FLic2 Library
+
 ## [1.1.1] 2023-08-05
 
 * Accepted pull from Matthias Schicker (komaxx) to prevent the FlicController sending an 'onButtonScanningStopped' prior to the first 'onButtonScanningStarted' message that it was sending each time you initiated scanning

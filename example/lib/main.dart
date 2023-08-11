@@ -253,6 +253,15 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
   }
 
   @override
+  void onButtonUpOrDown(Flic2ButtonUpOrDown button) {
+    super.onButtonUpOrDown(button);
+    // this is called when a button is pushed down or released
+    print(
+      'button ${button.button.uuid} ${button.isDown ? 'down' : 'up'}',
+    );
+  }
+
+  @override
   void onButtonDiscovered(String buttonAddress) {
     super.onButtonDiscovered(buttonAddress);
     // this is an address which we should be able to resolve to an actual button right away
@@ -261,7 +270,8 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
     flicButtonManager?.getFlic2ButtonByAddress(buttonAddress).then((button) {
       if (button != null) {
         print(
-            'button found with address $buttonAddress resolved to actual button data ${button.uuid}');
+          'button found with address $buttonAddress resolved to actual button data ${button.uuid}',
+        );
         // which we can add to the list to show right away
         _addButtonAndListen(button);
       }

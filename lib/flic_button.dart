@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 
+/// an enum to use to represent the connection state of our button controller
 enum Flic2ButtonConnectionState {
   disconnected,
   connecting,
@@ -13,6 +14,7 @@ enum Flic2ButtonConnectionState {
   connected_ready,
 }
 
+/// a class to contain all the data about a flic 2 button
 class Flic2Button {
   /// the unique ID of this button - a long ugly string
   final String uuid;
@@ -63,6 +65,7 @@ class Flic2Button {
   });
 }
 
+/// a class to contain all the information about the click of a Flic2 button
 class Flic2ButtonClick {
   /// the button
   final Flic2Button button;
@@ -101,18 +104,23 @@ class Flic2ButtonClick {
   });
 }
 
+/// a class to contain all the information about the up / down press of a connected
+/// flic 2 button
 class Flic2ButtonUpOrDown {
+  /// the button pressed
   final Flic2Button button;
 
   /// Whether the button was pressed down or released.
   final bool isDown;
 
+  /// constructor
   const Flic2ButtonUpOrDown({
     required this.button,
     required this.isDown,
   });
 }
 
+/// implement this listener to receive information about flic 2 buttons being found, connected and pressed
 abstract class Flic2Listener {
   /// called as a button is found by the plugin (while scanning)
   void onButtonFound(Flic2Button button) {}
@@ -144,7 +152,11 @@ abstract class Flic2Listener {
   void onButtonUpOrDown(Flic2ButtonUpOrDown button) {}
 }
 
-/// the plugin to handle Flic2 buttons
+/// the plugin to handle the finding of, connection to and listening tp to Flic2 buttons
+/// Flic2 buttons can be purchased from <https://flic.io/> and this library used (which wraps theirs)
+/// from <https://github.com/50ButtonsEach/flic2lib-android> to use them direct. There is also a hub
+/// they sell to control their buttons which this library does not use. Nor does this library connect
+/// to version 1 of their buttons, or the dial, but I guess it could (O:
 class FlicButtonPlugin {
   static const String _channelName = 'flic_button';
   static const String _methodNameInitialize = 'initializeFlic2';
@@ -186,6 +198,7 @@ class FlicButtonPlugin {
 
   final log = Logger('FlicButtonPlugin');
 
+  /// create the 'plugin' to manage all connection and listening to FLic 2 buttons
   FlicButtonPlugin({required this.flic2listener}) {
     // set the callback handler to ours to receive all our data back after
     // initialized
@@ -291,9 +304,13 @@ class FlicButtonPlugin {
   }
 
   /// Replaces all characters that can not exist unencoded in a JSON
-  /// with their JSON-encoded representations.
-  String replaceInvalidJsonCharacters(String json,
-      {bool isEncodeNonJsonChars = true}) {
+  /// with their JSON-encoded representations. We need this step because we seem
+  /// to be randomly getting very bad JSON back from some connected buttons (especially
+  /// from the name param which can have carriage returns and other bad things in there)
+  String replaceInvalidJsonCharacters(
+    String json, {
+    bool isEncodeNonJsonChars = true,
+  }) {
     var charCodes = <int>[];
 
     for (final int codeUnit in json.codeUnits) {
@@ -465,8 +482,10 @@ class FlicButtonPlugin {
             flic2listener.onFlic2Error(methodData);
             break;
           case METHOD_FLIC2_BUTTON_UP_DOWN:
-            flic2listener
-                .onButtonUpOrDown(_createFlic2UpOrDownFromData(methodData));
+            // process this method - a button was pushed, or released
+            flic2listener.onButtonUpOrDown(
+              _createFlic2UpOrDownFromData(methodData),
+            );
             break;
           default:
             log.severe('unrecognised method callback encountered $methodId');

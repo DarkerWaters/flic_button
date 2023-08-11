@@ -12,37 +12,77 @@ import io.flic.flic2libandroid.Flic2ButtonListener;
 import io.flic.flic2libandroid.Flic2Manager;
 import io.flic.flic2libandroid.Flic2ScanCallback;
 
+/* 
+ * this is the master controller to connect and listen to events from Flic2 buttons.
+*/
 public class Flic2Controller {
-    // keep the buttons so we can call functions on them later from flutter (via UUID)
+    /*
+     * keep the buttons so we can call functions on them later from flutter (via
+     * UUID)
+     */
     private final Map<String, Flic2Button> buttonsDiscovered = new HashMap<>();
 
+    /*
+     * the callback from iOS / Android that we process privately to send to
+     * listeners nicely
+     */
     private final ButtonCallback callback;
 
+    /*
+     * flag to signal we are currently scanning, so we don't wrongly send finished
+     * before started
+     */
     private boolean isCurrentlyScanning = false;
 
+    /*
+     * this is an interface to implement if you want a callback on events the button
+     * can cause
+     */
     public interface ButtonCallback {
         void onPairedButtonFound(Flic2Button button);
-        void onButtonFound(Flic2Button button);
-        void onButtonConnected();
-        void onButtonDiscovered(String buttonAddress);
-        void onButtonScanningStarted();
-        void onButtonScanningStopped();
-        void onError(String error);
-        void onButtonClicked(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold);
 
-        /**
-         * Called for live button down/up events.
+        void onButtonFound(Flic2Button button);
+
+        void onButtonConnected();
+
+        void onButtonDiscovered(String buttonAddress);
+
+        void onButtonScanningStarted();
+
+        void onButtonScanningStopped();
+
+        void onError(String error);
+
+        /*
+         * a button has been clicked, single, double or long (hold) click most
+         * interestingly
+         */
+        void onButtonClicked(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp,
+                boolean isSingleClick, boolean isDoubleClick, boolean isHold);
+
+        /*
+         * a button has been pressed, or released (only when live connected will this
+         * work)
          */
         void onButtonUpOrDown(Flic2Button button, boolean down);
     }
 
-    public Flic2Controller(Context context, ButtonCallback callback) {
+    /*
+     * create the controller with a callback to be informed of changes / events
+     * caused buy buttons
+     */
+    public Flic2Controller(Context context, ButtonCallback callback)
+
+    {
         // one callback to inform per manager
         this.callback = callback;
         // initialise the manager, don't need to remember it as we can just get it later
         Flic2Manager.initAndGetInstance(context, new Handler());
     }
 
+    /*
+     * start scanning for buttons
+     */
     public boolean startButtonScanning() {
         // cancel any previous scan
         cancelButtonScan();
@@ -81,7 +121,8 @@ public class Flic2Controller {
                     // and inform the caller of this state
                     callback.onButtonFound(button);
                 } else {
-                    callback.onError(String.format("Internal FLic2 Scan Error with result %d, subCode: %d", result, subCode));
+                    callback.onError(
+                            String.format("Internal FLic2 Scan Error with result %d, subCode: %d", result, subCode));
                 }
             }
         });
@@ -185,9 +226,11 @@ public class Flic2Controller {
             return false;
         } else {
             if (button.getConnectionState() == Flic2Button.CONNECTION_STATE_DISCONNECTED) {
-                // to listen to a button we need it connected first, let's assume the caller wants this done
+                // to listen to a button we need it connected first, let's assume the caller
+                // wants this done
                 button.connect();
-                // there's a function to inform the listeners of this while we are doing this ourselves
+                // there's a function to inform the listeners of this while we are doing this
+                // ourselves
                 callback.onButtonConnected();
             }
             // we might already be listening to this, try to remove it first
@@ -215,19 +258,23 @@ public class Flic2Controller {
 
     private final Flic2ButtonListener buttonListener = new Flic2ButtonListener() {
         @Override
-        public void onButtonSingleOrDoubleClickOrHold(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold) {
+        public void onButtonSingleOrDoubleClickOrHold(Flic2Button button, boolean wasQueued, boolean lastQueued,
+                long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold) {
             // let the base deal
-            super.onButtonSingleOrDoubleClickOrHold(button, wasQueued, lastQueued, timestamp, isSingleClick, isDoubleClick, isHold);
+            super.onButtonSingleOrDoubleClickOrHold(button, wasQueued, lastQueued, timestamp, isSingleClick,
+                    isDoubleClick, isHold);
             // and pass this button press from Flic2 on to our application
             callback.onButtonClicked(button, wasQueued, lastQueued, timestamp, isSingleClick, isDoubleClick, isHold);
         }
 
         @Override
-        public void onButtonUpOrDown(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isUp, boolean isDown) {
+        public void onButtonUpOrDown(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp,
+                boolean isUp, boolean isDown) {
             super.onButtonUpOrDown(button, wasQueued, lastQueued, timestamp, isUp, isDown);
 
             if (!wasQueued) { // only emitted for "live" events.
-                // Omitting `isUp`: Guaranteed by the SDK to be !isDown. No value gained by keeping it.
+                // Omitting `isUp`: Guaranteed by the SDK to be !isDown. No value gained by
+                // keeping it.
                 callback.onButtonUpOrDown(button, isDown);
             }
         }

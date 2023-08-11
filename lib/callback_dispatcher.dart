@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// the master callback dispatcher to send and receive data from the iOS and android implementations
 void callbackDispatcher() {
   // 1. Initialize MethodChannel used to communicate with the platform portion of the plugin.
   const MethodChannel backgroundChannel =
