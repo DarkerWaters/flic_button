@@ -30,6 +30,7 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 #define METHOD_FLIC2_SCANNING @(104)
 #define METHOD_FLIC2_SCAN_COMPLETE @(105)
 #define METHOD_FLIC2_FOUND @(106)
+#define METHOD_FLIC2_UP_DOWN @(107)
 #define METHOD_FLIC2_ERROR @(200)
 
 @implementation FlicButtonPlugin
@@ -267,6 +268,20 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
     else {
         result(FlutterMethodNotImplemented);
     }
+}
+
+- (void)onButtonUpOrDown:(FLICButton *)button down:(BOOL)down {
+        // need to convert all this to a nice JSON structure to send then
+        NSString* jsonData = [NSString stringWithFormat:
+                              @"{"
+                              @"\"down\":%s,"
+                              @"\"button\":%@"
+                              @"}",
+                              down ? "true" : "false",
+                              [self buttonToJson:button]];
+        // just send this method with the correct data then please
+        [self informListenersOfMethod:METHOD_FLIC2_UP_DOWN withData:jsonData];
+    
 }
 
 - (void)onButtonClicked:(FLICButton *)button wasQueued:(BOOL)queued at:(NSInteger)age withClicks:(NSInteger)clicks {

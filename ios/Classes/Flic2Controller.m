@@ -277,6 +277,21 @@
     }
 }
 
+- (void)button:(FLICButton *)button didReceiveButtonDown:(BOOL)queued age:(NSInteger)age {
+    if (nil != self->callback) {
+        // pass this to the callback then
+        [self->callback onButtonUpOrDown:button down:YES];
+    }
+}
+
+- (void)button:(FLICButton *)button didReceiveButtonUp:(BOOL)queued age:(NSInteger)age {
+    if (nil != self->callback) {
+        // pass this to the callback then
+        [self->callback onButtonUpOrDown:button down:NO];
+    }
+}
+
+
 - (void)button:(FLICButton *)button didReceiveButtonClick:(BOOL)queued age:(NSInteger)age {
     if (nil != self->callback) {
         // pass this to the callback then

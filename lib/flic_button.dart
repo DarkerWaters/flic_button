@@ -1,14 +1,15 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 
 enum Flic2ButtonConnectionState {
   disconnected,
   connecting,
-  // ignore: constant_identifier_names
   connecting_starting,
-  // ignore: constant_identifier_names
   connected_ready,
 }
 
@@ -37,7 +38,7 @@ class Flic2Button {
   /// the state of the battery % so from 0 - 100
   final int? battPercentage;
 
-  /// the timestamp the batter data was stored (not iOS)
+  /// the timestamp the battery data was stored (not iOS)
   final int? battTimestamp;
 
   /// the current voltage of the battery
@@ -100,6 +101,18 @@ class Flic2ButtonClick {
   });
 }
 
+class Flic2ButtonUpOrDown {
+  final Flic2Button button;
+
+  /// Whether the button was pressed down or released.
+  final bool isDown;
+
+  const Flic2ButtonUpOrDown({
+    required this.button,
+    required this.isDown,
+  });
+}
+
 abstract class Flic2Listener {
   /// called as a button is found by the plugin (while scanning)
   void onButtonFound(Flic2Button button) {}
@@ -113,7 +126,8 @@ abstract class Flic2Listener {
   /// called by the plugin as a button is clicked
   void onButtonClicked(Flic2ButtonClick buttonClick);
 
-  /// called by the plugin as a button becomes connected
+  /// called by the plugin as a button becomes connected. This is called during scanning
+  /// as an in-between step
   void onButtonConnected() {}
 
   /// called by the plugin as a scan is started
@@ -124,6 +138,10 @@ abstract class Flic2Listener {
 
   /// called by the plugin as an unexpected error is encountered
   void onFlic2Error(String error) {}
+
+  /// called by the plugin when a connected button was pressed or released.
+  /// Events of this type are "live", i.e., happened very recently.
+  void onButtonUpOrDown(Flic2ButtonUpOrDown button) {}
 }
 
 /// the plugin to handle Flic2 buttons
@@ -145,30 +163,19 @@ class FlicButtonPlugin {
   static const String _methodNameDisconnectButton = "disconnectButton";
   static const String _methodNameForgetButton = "forgetButton";
 
-  // ignore: constant_identifier_names
   static const String ERROR_CRITICAL = 'CRITICAL';
-  // ignore: constant_identifier_names
   static const String ERROR_NOT_STARTED = 'NOT_STARTED';
-  // ignore: constant_identifier_names
   static const String ERROR_ALREADY_STARTED = 'ALREADY_STARTED';
-  // ignore: constant_identifier_names
   static const String ERROR_INVALID_ARGUMENTS = 'INVALID_ARGUMENTS';
 
-  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_DISCOVER_PAIRED = 100;
-  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_DISCOVERED = 101;
-  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_CONNECTED = 102;
-  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_CLICK = 103;
-  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_SCANNING = 104;
-  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_SCAN_COMPLETE = 105;
-  // ignore: constant_identifier_names
   static const int METHOD_FLIC2_FOUND = 106;
-  // ignore: constant_identifier_names
+  static const int METHOD_FLIC2_BUTTON_UP_DOWN = 107;
   static const int METHOD_FLIC2_ERROR = 200;
 
   static const MethodChannel _channel = MethodChannel(_channelName);
@@ -393,6 +400,24 @@ class FlicButtonPlugin {
     }
   }
 
+  /// helper to convert the json from native to the object passed around in flutter
+  Flic2ButtonUpOrDown _createFlic2UpOrDownFromData(String data) {
+    try {
+      final json = jsonDecode(replaceInvalidJsonCharacters(data));
+      return Flic2ButtonUpOrDown(
+        button: _createFlic2FromData(json['button']),
+        isDown: json['down'],
+      );
+    } catch (error) {
+      log.warning('data back is not a valid upOrDown: $data $error');
+      // return error button up and down data
+      return Flic2ButtonUpOrDown(
+        button: _createFlic2FromData(''),
+        isDown: false,
+      );
+    }
+  }
+
   /// called back from the native with the relevant data
   Future<void> _methodCallHandler(MethodCall call) async {
     // this is called from the other side when there's something happening in which
@@ -438,6 +463,10 @@ class FlicButtonPlugin {
           case METHOD_FLIC2_ERROR:
             // process this method - scanning for buttons completed
             flic2listener.onFlic2Error(methodData);
+            break;
+          case METHOD_FLIC2_BUTTON_UP_DOWN:
+            flic2listener
+                .onButtonUpOrDown(_createFlic2UpOrDownFromData(methodData));
             break;
           default:
             log.severe('unrecognised method callback encountered $methodId');
