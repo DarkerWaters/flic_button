@@ -22,6 +22,8 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+    namespace "uk.co.darkerwaters.flic_button"
+
     compileSdkVersion 33
 
     defaultConfig {
