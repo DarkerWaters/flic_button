@@ -35,6 +35,13 @@ Android {
 ### Add permissions for Bluetooth
 We need to add the permission to use Bluetooth and access location:
 
+### Building with Gradle 8
+The build.gradle needs the namespace defined for newer versions, but not for old, if you have a problem you will need to uncomment
+```
+//namespace "uk.co.darkerwaters.flic_button"
+```
+in the ./android/build.gradle file
+
 #### **Android**
 In the **android/app/src/main/AndroidManifest.xml** let’s add:
 
