@@ -5,5 +5,6 @@
         "Flic",
         "invokation",
         "Perc"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

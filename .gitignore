@@ -2,3 +2,4 @@
 .idea
 .dart_tool
 example/ios/build/*
+build/*

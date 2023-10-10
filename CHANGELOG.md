@@ -1,3 +1,7 @@
+## [1.2.1] 2023-10-10
+
+* Accepted pull from Matthias Schicker (komaxx) to make compatible with gradle 8 with code comment (want to keep compatibility with old)
+
 ## [1.2.0] 2023-08-05
 
 * Accepted pull from Matthias Schicker (komaxx) to add the function to the available interface to listen to button press and release events from the FLic2 Library
