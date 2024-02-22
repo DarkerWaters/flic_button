@@ -1,3 +1,7 @@
+## [1.2.2] 2024-01-22
+
+* Upgraded lint dependencies and check is compiling with latest flutter and gradle versions
+
 ## [1.2.1] 2023-10-10
 
 * Accepted pull from Matthias Schicker (komaxx) to make compatible with gradle 8 with code comment (want to keep compatibility with old)
