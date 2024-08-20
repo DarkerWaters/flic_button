@@ -1,3 +1,7 @@
+## [1.2.3] 2024-08-20
+
+* The android version of flic2-lib is now hosted by JitPack so updated the gradle build to reflect that. Also upgraded gradle from v7 to v8.
+
 ## [1.2.2] 2024-01-22
 
 * Upgraded lint dependencies and check is compiling with latest flutter and gradle versions

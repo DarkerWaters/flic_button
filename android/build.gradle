@@ -16,6 +16,7 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -23,9 +24,9 @@ apply plugin: 'com.android.library'
 
 android {
     // gradle version 8 requires this line to be in place but breaks older gradle builds
-    //namespace "uk.co.darkerwaters.flic_button"
+    namespace "uk.co.darkerwaters.flic_button"
 
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 19
@@ -37,5 +38,5 @@ android {
 }
 
 dependencies {
-    implementation 'io.flic:flic2lib-android:1.1.0'
+    implementation 'com.github.50ButtonsEach:flic2lib-android:1.+'
 }
