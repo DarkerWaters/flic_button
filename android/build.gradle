@@ -16,6 +16,7 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -26,7 +27,7 @@ android {
         namespace "uk.co.darkerwaters.flic_button"
     }
 
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 19
@@ -38,5 +39,5 @@ android {
 }
 
 dependencies {
-    implementation 'io.flic:flic2lib-android:1.1.0'
+    implementation 'com.github.50ButtonsEach:flic2lib-android:1.+'
 }
