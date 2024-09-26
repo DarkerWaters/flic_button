@@ -1,3 +1,7 @@
+## [1.2.5] 2024-09-26
+
+* xCode requires the ```current``` folder to be in place and not be a simlink
+
 ## [1.2.4] 2024-09-26
 
 * Many thanks to Matthias Schicker for updating to the latest version of the Flic2 framework so builds in ios framework 14
