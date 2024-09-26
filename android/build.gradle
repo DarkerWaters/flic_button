@@ -23,8 +23,9 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    // gradle version 8 requires this line to be in place but breaks older gradle builds
-    namespace "uk.co.darkerwaters.flic_button"
+    if (project.android.hasProperty("namespace")) {
+        namespace "uk.co.darkerwaters.flic_button"
+    }
 
     compileSdkVersion 34
 
