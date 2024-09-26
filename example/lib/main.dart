@@ -1,3 +1,4 @@
+// as this is just an example file we don't want to depend on logging and will just use print statements
 // ignore_for_file: avoid_print
 
 import 'dart:io';
