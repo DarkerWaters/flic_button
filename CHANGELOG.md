@@ -1,3 +1,7 @@
+## [1.2.4] 2024-09-26
+
+* Many thanks to Matthias Schicker for updating to the latest version of the Flic2 framework so builds in ios framework 14
+
 ## [1.2.3] 2024-08-20
 
 * The android version of flic2-lib is now hosted by JitPack so updated the gradle build to reflect that. Also upgraded gradle from v7 to v8.

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,12 +8,14 @@ import 'package:flic_button/flic_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with Flic2Listener {
@@ -80,9 +84,9 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
     // get all the buttons from the plugin that were there last time
     flicButtonManager?.getFlic2Buttons().then((buttons) {
       // put all of these in the list to show the buttons
-      buttons.forEach((button) {
+      for (final button in buttons) {
         _addButtonAndListen(button);
-      });
+      }
     });
   }
 
@@ -132,32 +136,30 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
             title: const Text('Flic Button Plugin Example'),
           ),
           body: FutureBuilder(
-            future: flicButtonManager != null
-                ? flicButtonManager?.invokation
-                : null,
+            future: flicButtonManager?.invokation,
             builder: (ctx, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 // are not initialized yet, wait a sec - should be very quick!
                 return Center(
                   child: ElevatedButton(
                     onPressed: () => _startStopFlic2(),
-                    child: Text('Start and initialize Flic2'),
+                    child: const Text('Start and initialize Flic2'),
                   ),
                 );
               } else {
                 // we have completed the init call, we can perform scanning etc
                 return Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       'Flic2 is initialized',
                       style: TextStyle(fontSize: 20),
                     ),
                     ElevatedButton(
                       onPressed: () => _startStopFlic2(),
-                      child: Text('Stop Flic2'),
+                      child: const Text('Stop Flic2'),
                     ),
                     if (flicButtonManager != null)
                       Row(
@@ -166,7 +168,7 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
                         children: [
                           ElevatedButton(
                               onPressed: () => _getButtons(),
-                              child: Text('Get Buttons')),
+                              child: const Text('Get Buttons')),
                           ElevatedButton(
                               onPressed: () => _startStopScanningForFlic2(),
                               child: Text(_isScanning
@@ -185,16 +187,17 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
                         ),
                       ),
                     if (_isScanning)
-                      Text(
-                          'Hold down your flic2 button so we can find it now we are scanning...'),
+                      const Text(
+                        'Hold down your flic2 button so we can find it now we are scanning...',
+                      ),
                     // and show the list of buttons we have found at this point
                     Expanded(
                       child: ListView(
                           children: _buttonsFound.values
                               .map((e) => ListTile(
                                     key: ValueKey(e.uuid),
-                                    leading:
-                                        Icon(Icons.radio_button_on, size: 48),
+                                    leading: const Icon(Icons.radio_button_on,
+                                        size: 48),
                                     title: Text('FLIC2 @${e.buttonAddr}'),
                                     subtitle: Column(
                                       children: [
@@ -214,10 +217,10 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
                                                   ? 'connect'
                                                   : 'disconnect'),
                                             ),
-                                            SizedBox(width: 20),
+                                            const SizedBox(width: 20),
                                             ElevatedButton(
                                               onPressed: () => _forgetButton(e),
-                                              child: Text('forget'),
+                                              child: const Text('forget'),
                                             ),
                                           ],
                                         ),

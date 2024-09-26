@@ -6,5 +6,12 @@
         "invokation",
         "Perc"
     ],
-    "java.configuration.updateBuildConfiguration": "disabled"
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "latex",
+        "plaintext"
+    ]
 }
