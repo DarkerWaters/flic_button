@@ -12,9 +12,9 @@ import io.flic.flic2libandroid.Flic2ButtonListener;
 import io.flic.flic2libandroid.Flic2Manager;
 import io.flic.flic2libandroid.Flic2ScanCallback;
 
-/* 
+/*
  * this is the master controller to connect and listen to events from Flic2 buttons.
-*/
+ */
 public class Flic2Controller {
     /*
      * keep the buttons so we can call functions on them later from flutter (via
@@ -71,9 +71,7 @@ public class Flic2Controller {
      * create the controller with a callback to be informed of changes / events
      * caused buy buttons
      */
-    public Flic2Controller(Context context, ButtonCallback callback)
-
-    {
+    public Flic2Controller(Context context, ButtonCallback callback) {
         // one callback to inform per manager
         this.callback = callback;
         // initialise the manager, don't need to remember it as we can just get it later
