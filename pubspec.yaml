@@ -1,6 +1,6 @@
 name: flic_button
 description: An interface to the flic2 libraries for iOS and Android wrapping the offical ones supplied by flic.io (50ButtonsEach).
-version: 1.2.5
+version: 1.2.6
 homepage: https://github.com/DarkerWaters/flic_button.git
 
 environment:
