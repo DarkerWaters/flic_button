@@ -1,3 +1,7 @@
+## [1.2.6] 2025-02-17
+
+* Matthias Schicker (komaxx) Makes the plugin compatible Flutter 3.29.0
+
 ## [1.2.5] 2024-09-26
 
 * xCode requires the ```current``` folder to be in place and not be a simlink
