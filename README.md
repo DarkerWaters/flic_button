@@ -32,8 +32,6 @@ Android {
   defaultConfig {
      minSdkVersion: 19
 ```
-### Add permissions for Bluetooth
-We need to add the permission to use Bluetooth and access location:
 
 ### Building with Gradle 7
 The build.gradle needs the namespace defined for newer versions, but not for old, if you have a problem (gradle < 8) you will need to comment out
@@ -41,6 +39,9 @@ The build.gradle needs the namespace defined for newer versions, but not for old
 //namespace "uk.co.darkerwaters.flic_button"
 ```
 in the ./android/build.gradle file
+
+### Add permissions for Bluetooth
+We need to add the permission to use Bluetooth and access location:
 
 #### **Android**
 In the **android/app/src/main/AndroidManifest.xml** let’s add:
@@ -52,6 +53,17 @@ In the **android/app/src/main/AndroidManifest.xml** let’s add:
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 ```
+
+> **NOTE: BLE sccanning**
+> If you include this library into your app, the `AndroidManifset.xml` file of the plugin and your own will merge.
+> This will result in a declaration of the `BLUETOOTH_SCAN` permission with the remark `neverForLocation` (see [Android documentation](https://developer.android.com/develop/connectivity/bluetooth/bt-permissions#assert-never-for-location)).
+> This is correct if you only want to interact with Flic Buttons; however, if your app also needs to scan for BLE devices, this will cause your app to not receive some BLE advertisements, e.g., from iBeacons.
+> To correct for this, replace the line for `BLUETOOTH_SCAN` above with:
+> ```xml
+> <uses-permission android:name="android.permission.BLUETOOTH_SCAN" tools:remove="android:usesPermissionFlags"/>
+> ```
+> With that, `neverForLocation` will not be included in the merged manifest file, and BLE scanning should work just fine!
+
 #### **IOS**
 In the **ios/Runner/Info.plist** let’s add a number of permissions to enable bluetooth and location access. Also needed, at the bottom, is the ability to access BLE in the background...
 
