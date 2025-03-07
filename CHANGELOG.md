@@ -1,3 +1,7 @@
+## [1.2.7] 2025-03-07
+
+* Document update for BLE scanning on android
+
 ## [1.2.6] 2025-02-17
 
 * Matthias Schicker (komaxx) Makes the plugin compatible Flutter 3.29.0
