@@ -85,6 +85,26 @@ In the **ios/Runner/Info.plist** let’s add a number of permissions to enable b
         </array>
 ```
 
+In the **ios/Runner/Podfile** you will need to add the permission for bluetooth to be activated too
+```
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      flutter_additional_ios_build_settings(target)
+      target.build_configurations.each do |config|
+        # You can enable the permissions needed here
+        #
+        #  Preprocessor definitions can be found in: https://github.com/Baseflow/flutter-permission-handler/blob/master/permission_handler/ios/Classes/PermissionHandlerEnums.h
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+          '$(inherited)',
+
+          ## dart: PermissionGroup.bluetooth
+          'PERMISSION_BLUETOOTH=1',
+        ]
+      end
+    end
+  end
+```
+
 For location permissions on iOS see more at: [https://developer.apple.com/documentation/corelocation/requesting_authorization_for_location_services](https://developer.apple.com/documentation/corelocation/requesting_authorization_for_location_services)
 
 A simple usage example:

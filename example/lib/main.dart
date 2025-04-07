@@ -50,6 +50,17 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
                   await Permission.bluetoothConnect.request().isGranted));
       if (!isGranted) {
         print('cannot scan for a button when scanning is not permitted');
+        // android needs scanning permission then please
+        if (Platform.isAndroid) {
+          await [
+            Permission.bluetoothConnect,
+            Permission.bluetooth,
+            Permission.bluetoothScan,
+          ].request();
+        } else {
+          // we need bluetooth permission on iOS
+          await Permission.bluetooth.request();
+        }
       }
       // flic 2 needs permissions for FINE_LOCATION
       // when on android to perform this action

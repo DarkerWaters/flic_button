@@ -1,3 +1,7 @@
+## [1.2.8] 2025-04-07
+
+* Added permissions (bluetooth) for iOS guidance and more permissions in android.manifest
+
 ## [1.2.7] 2025-03-07
 
 * Document update for BLE scanning on android
