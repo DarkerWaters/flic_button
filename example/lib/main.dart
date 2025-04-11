@@ -44,29 +44,68 @@ class _MyAppState extends State<MyApp> with Flic2Listener {
       // we need permission to scan for a button please, iOS needs bluetooth
       // permission, whereas android also has scan and connect permissions that
       // we will need before scanning and connecting to Flic 2
-      final isGranted = await Permission.bluetooth.request().isGranted &&
-          (!Platform.isAndroid ||
-              (await Permission.bluetoothScan.request().isGranted &&
-                  await Permission.bluetoothConnect.request().isGranted));
+      final bool isGranted;
+      if (!Platform.isAndroid) {
+        // iOS needs bluetooth permission
+        isGranted = await Permission.bluetooth.request().isGranted;
+      }
+      // if we are SKD version 31 or higher, we need bluetooth, scan and connect permissions
+      // else if ( (await DeviceInfoPlus().version).sdkInt > 30) {
+      //   // android needs bluetooth, scan and connect permissions
+      //   isGranted =
+      //       await Permission.bluetoothScan.request().isGranted &&
+      //       await Permission.bluetoothConnect.request().isGranted;
+      // }
+      // else {
+      //   // older android devices need only ask for bluetooth permission
+      //   // but we also need location permissions as bluetooth can reveal location
+      //   // as a side effect of hearing bluetooth beacons in particular
+      //   isGranted = await Permission.bluetooth.request().isGranted &&
+      //       await Permission.location.request().isGranted;
+      // }
+      else {
+        print(
+            'TODO - check for android version and ask for correct permissions');
+        // as we don't want to depend on device_info_plus we will just ask for everything
+        // in this demo
+        //! you should install device_info_plus and use the SDK version for the correct BT permissions really...
+        isGranted = await Permission.bluetooth.request().isGranted &&
+            await Permission.bluetoothScan.request().isGranted &&
+            await Permission.bluetoothConnect.request().isGranted &&
+            await Permission.location.request().isGranted;
+      }
       if (!isGranted) {
         print('cannot scan for a button when scanning is not permitted');
         // android needs scanning permission then please
         if (Platform.isAndroid) {
+          // android 12 and above needs bluetooth, scan and connect permissions
+          // android 11 and below only need bluetooth permission
+          // if ((await DeviceInfoPlus().version).sdkInt > 30) {
+          //   // check for the modern way of working
+          //   await [
+          //     Permission.bluetoothScan,
+          //     Permission.bluetoothConnect,
+          //   ].request();
+          // } else {
+          //   // legacy devices need bluetooth and location permissions
+          //   await [
+          //     Permission.bluetooth,
+          //     Permission.location,
+          //   ].request();
+          // }
+          //! as we haven't added device_info_plus to this example, we will just ask for everything
           await [
-            Permission.bluetoothConnect,
             Permission.bluetooth,
             Permission.bluetoothScan,
+            Permission.bluetoothConnect,
+            Permission.location,
           ].request();
         } else {
-          // we need bluetooth permission on iOS
+          // we need simple bluetooth permissions only on iOS
           await Permission.bluetooth.request();
         }
       }
-      // flic 2 needs permissions for FINE_LOCATION
-      // when on android to perform this action
-      if (Platform.isAndroid && !await Permission.location.isGranted) {
-        await Permission.location.request();
-      }
+      // and we can finally scan for Flic2 buttons
       flicButtonManager?.scanForFlic2();
     } else {
       // are scanning - cancel that

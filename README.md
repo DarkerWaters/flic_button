@@ -44,14 +44,20 @@ in the ./android/build.gradle file
 We need to add the permission to use Bluetooth and access location:
 
 #### **Android**
-In the **android/app/src/main/AndroidManifest.xml** let’s add:
+In the **android/app/src/main/AndroidManifest.xml** let's add permissions we need:
 
 ```xml 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <!-- admin access to turn on the bluetooth when needed for legacy devices-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <!-- location permissions needed on older devices to request bluetooth scanning-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
+    
+    <!-- bluetooth permissions changed post SDK 30 to use these (never for location will filter beacons etc). -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" 
+                     android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 ```
 
 > **NOTE: BLE sccanning**

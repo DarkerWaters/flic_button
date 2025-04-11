@@ -1,3 +1,7 @@
+## [1.2.9] 2025-04-11
+
+* Permissions request in the main.dart in example is more fine-grained as per android SDK version
+
 ## [1.2.8] 2025-04-07
 
 * Added permissions (bluetooth) for iOS guidance and more permissions in android.manifest
