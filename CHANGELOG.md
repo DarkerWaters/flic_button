@@ -1,3 +1,7 @@
+## [1.2.10] 2025-07-03
+
+* Updated to target SDK 36
+
 ## [1.2.9] 2025-04-11
 
 * Permissions request in the main.dart in example is more fine-grained as per android SDK version

@@ -27,7 +27,7 @@ android {
         namespace "uk.co.darkerwaters.flic_button"
     }
 
-    compileSdkVersion 34
+    compileSdkVersion 36
 
     defaultConfig {
         minSdkVersion 19
