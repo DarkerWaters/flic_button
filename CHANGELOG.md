@@ -1,3 +1,7 @@
+## [1.2.11] 2026-02-01
+
+* Updated to remove warnings - thanks to tfindlay-au
+
 ## [1.2.10] 2025-07-03
 
 * Updated to target SDK 36
