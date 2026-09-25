@@ -2,6 +2,7 @@ package uk.co.darkerwaters.flic_button;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +76,7 @@ public class Flic2Controller {
         // one callback to inform per manager
         this.callback = callback;
         // initialise the manager, don't need to remember it as we can just get it later
-        Flic2Manager.initAndGetInstance(context, new Handler());
+        Flic2Manager.initAndGetInstance(context, new Handler(Looper.getMainLooper()));
     }
 
     /*

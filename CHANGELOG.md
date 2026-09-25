@@ -1,6 +1,26 @@
-## [1.2.7] 2026-09-25
+## [1.2.12] 2026-09-25
 
 * Adds Swift Package Manager support for iOS, alongside the existing CocoaPods support.
+
+## [1.2.11] 2026-02-01
+
+* Updated to remove warnings - thanks to tfindlay-au
+
+## [1.2.10] 2025-07-03
+
+* Updated to target SDK 36
+
+## [1.2.9] 2025-04-11
+
+* Permissions request in the main.dart in example is more fine-grained as per android SDK version
+
+## [1.2.8] 2025-04-07
+
+* Added permissions (bluetooth) for iOS guidance and more permissions in android.manifest
+
+## [1.2.7] 2025-03-07
+
+* Document update for BLE scanning on android
 
 ## [1.2.6] 2025-02-17
 
