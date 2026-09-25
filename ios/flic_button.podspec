@@ -13,14 +13,14 @@ An interface to the flic button.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'flic_button/Sources/flic_button/**/*.{h,m}'
+  s.public_header_files = 'flic_button/Sources/flic_button/include/**/*.h'
   s.dependency 'Flutter'
-  s.platform = :ios, '8.0'
+  s.platform = :ios, '12.0'
 
-  s.preserve_paths = './flic2lib.xcframework/*'
+  s.preserve_paths = 'flic_button/Frameworks/flic2lib.xcframework/*'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework flic2lib' }
-  s.vendored_framework = 'flic2lib.xcframework'
+  s.vendored_framework = 'flic_button/Frameworks/flic2lib.xcframework'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

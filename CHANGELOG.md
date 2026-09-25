@@ -1,3 +1,7 @@
+## [1.2.7] 2026-09-25
+
+* Adds Swift Package Manager support for iOS, alongside the existing CocoaPods support.
+
 ## [1.2.6] 2025-02-17
 
 * Matthias Schicker (komaxx) Makes the plugin compatible Flutter 3.29.0
