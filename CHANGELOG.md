@@ -1,3 +1,7 @@
+## [1.2.12] 2026-09-25
+
+* Adds Swift Package Manager support for iOS, alongside the existing CocoaPods support.
+
 ## [1.2.11] 2026-02-01
 
 * Updated to remove warnings - thanks to tfindlay-au

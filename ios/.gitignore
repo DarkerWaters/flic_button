@@ -12,6 +12,9 @@ build/
 GeneratedPluginRegistrant.h
 GeneratedPluginRegistrant.m
 
+.build/
+.swiftpm/
+
 .generated/
 
 *.pbxuser

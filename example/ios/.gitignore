@@ -11,6 +11,8 @@
 Icon?
 **/Pods/
 **/.symlinks/
+**/.build/
+**/.swiftpm/
 profile
 Podfile.lock
 xcuserdata
